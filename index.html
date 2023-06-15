@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Digital Numbers Regular';
+            font-style: normal;
+            font-weight: normal;
+            src: local('Digital Numbers Regular'), url('DigitalNumbers-Regular.woff') format('woff');
+        }
+
+
+        body {
+            background: gray;
+        }
+
+        * {
+            transition: 1s;
+        }
+
+        #outerbox {
+            width: 500px;
+            height: 500px;
+            background: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 25px;
+        }
+
+        #innerbox {
+            position: absolute;
+            width: 370px;
+            height: 370px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgb(53, 53, 53);
+        }
+
+        #innerbox:hover {
+            background: rgb(0, 204, 255);
+        }
+
+        #right:hover {
+            background: rgb(0, 204, 255);
+        }
+
+        #left:hover {
+            background: rgb(0, 204, 255);
+        }
+
+        #clock {
+            position: absolute;
+            width: 370px;
+            height: 370px;
+            /* background: lightcoral; */
+        }
+
+        #text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Digital Numbers Regular';
+            font-weight: normal;
+            font-size: 60px;
+            color: white;
+        }
+
+        #textDay {
+            position: absolute;
+            top: 90%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            font-family: 'Noto Serif TC', serif;
+            color: white;
+        }
+
+        #textnation {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            font-family: 'Noto Serif TC', serif;
+            color: white;
+        }
+
+        #nation {
+            position: absolute;
+            width: 370px;
+            height: 370px;
+            background: lightcoral;
+            display: none;
+        }
+
+        #left {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 50%;
+            left: 1.75%;
+            transform: translateY(-50%);
+            background: rgb(53, 53, 53);
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 45px;
+            font-size: 30px;
+            font-family: "微軟正黑體";
+            cursor: pointer;
+        }
+
+        #right {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 50%;
+            left: 88.75%;
+            transform: translateY(-50%);
+            background: rgb(53, 53, 53);
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 45px;
+            font-size: 30px;
+            font-family: "微軟正黑體";
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="outerbox">
+        <div id="left">&lt;</div>
+        <div id="innerbox">
+            <!-- <div id="text"></div> -->
+            <div id="clock">
+                <div id="textnation">台灣</div>
+                <div id="text"></div>
+                <div id="textDay"></div>
+                <div id="nation_name"></div>
+            </div>
+        </div>
+        <div id="right">&gt;</div>
+
+    </div>
+    <script>
+        const hour = document.getElementById('hour')
+        const minute = document.getElementById('minute')
+        const second = document.getElementById('second')
+        const text = document.getElementById('text')
+        const textDay = document.getElementById('textDay')
+        const textnation = document.getElementById('textnation')
+        const body = document.getElementsByTagName('body')[0]
+        const left = document.getElementById('left')
+        const right = document.getElementById('right')
+        const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+        const nation_ch = ['台灣', '日本', '紐西蘭', '墨西哥', '阿根廷', '英國', '法國', '土耳其', '越南']
+        const nation_en = ['Asia/Taipei', 'Asia/Tokyo', 'Pacific/Auckland', 'America/Tijuana', 'America/Argentina/Buenos_Aires', 'Europe/London', 'Europe/Paris', 'Europe/Istanbul', 'Asia/Ho_Chi_Minh']
+        let i = 0
+
+        const clock = () => {
+            var options = {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+                timeZone: `${nation_en[i]}`
+            };
+            var date = new Date().toLocaleString('zh-TW', options)
+            console.log(date)
+            // 2023年6月15日 星期四 23:12:24
+            var hourStr = date.slice(15, 17)
+            var minuteStr = date.slice(18, 20)
+            var dayStr = date.slice(11, 14)
+
+            text.innerText = `${hourStr}:${minuteStr}`
+            textDay.innerText = `${dayStr}`
+            textnation.innerText = `${nation_ch[i]}`
+        }
+        left.addEventListener("click", function () {
+            if (i <= 0) {
+                i = 0
+                console.log(i)
+            } else {
+                i--
+                console.log(i)
+
+            }
+        })
+        right.addEventListener("click", function () {
+            if (i < 8) {
+                i++
+                console.log(i)
+            } else {
+                i = 8
+                console.log(i)
+
+            }
+        })
+        clock()
+        setInterval(clock, 1000)
+    </script>
+</body>
+
+</html>
